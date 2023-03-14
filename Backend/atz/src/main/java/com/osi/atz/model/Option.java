@@ -1,11 +1,12 @@
 package com.osi.atz.model;
 
-import java.util.Date;
-
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -17,18 +18,17 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "challenges")
-public class Challenge {
+@Table(name = "options")
+public class Option {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private int challengeId;
-	private String challengeName;
-	private int challengeDurationInMinutes;
-	private Date startDateTime;
-	private Date endDateTime;
+	private int optionId;
+	private String option;
+	private boolean isCorrect;
 	
-	
-	
+	@ManyToOne(cascade = CascadeType.ALL)
+	@JoinColumn(name = "questionId", referencedColumnName ="questionId" )
+	private Question question;
 
 }
