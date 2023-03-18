@@ -1,6 +1,7 @@
 package com.osi.atz.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +24,13 @@ public class Question {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "question_id")
 	private int questionId;
 	private String question;	
 	private int marks;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "challengeId", referencedColumnName ="challengeId" )
+	@JoinColumn(name = "challenge_id", referencedColumnName ="challenge_id" )
 	private Challenge challenge;
 
 }

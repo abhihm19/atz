@@ -1,6 +1,7 @@
 package com.osi.atz.model;
 
 import jakarta.persistence.CascadeType;
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -23,12 +24,15 @@ public class Option {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Column(name = "option_id")
 	private int optionId;
-	private String option;
+	private String optionDetails;
+	
+	@Column(name = "is_correct", nullable = true)	
 	private boolean isCorrect;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
-	@JoinColumn(name = "questionId", referencedColumnName ="questionId" )
+	@JoinColumn(name = "question_id", referencedColumnName ="question_id" )
 	private Question question;
 
 }
