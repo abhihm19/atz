@@ -35,6 +35,7 @@ public class UserDetail {
 	private String universityName;
 	private int graduationYear;
 	private String degree;
+	private int numberOfAttempts;
 	
 	
 	@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)

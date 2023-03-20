@@ -9,11 +9,10 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpRequest {
+public class OptionDto {
 	
-	private String emailId;
-	private String username;
-	private String password;
-	private String role;
+	private int optionId;
+	private String optionDetails;
+	private boolean isCorrect;
 
 }

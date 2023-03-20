@@ -30,7 +30,8 @@ public class UserServiceImpl implements IUserService {
 	@Override
 	public void saveUser(SignUpRequest signUpRequest) {		
 		User user = new User();		
-		user.setEmail(signUpRequest.getEmail());
+		user.setEmailId(signUpRequest.getEmailId());
+		user.setUsername(signUpRequest.getUsername());
 		user.setPassword(signUpRequest.getPassword());
 		if(signUpRequest.getRole().equals("ROLE_COMPANY")) {
 			Company company = new Company();
@@ -47,15 +48,5 @@ public class UserServiceImpl implements IUserService {
 		
 		userRepository.save(user);
 	}
-	
-
-//	@Override
-//	public UserDto getUser() {
-//		String userName = "";
-//		User user = userRepository.findByUserNameOrEmail(userName);
-//		UserDto userDto = new UserDto();		
-//		userDto.setUserNameOrEmail(user.getUserNameOrEmail());		
-//		return userDto;
-//	}
 
 }

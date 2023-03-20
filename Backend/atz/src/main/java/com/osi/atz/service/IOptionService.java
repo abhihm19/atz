@@ -1,12 +1,15 @@
 package com.osi.atz.service;
 
-import com.osi.atz.model.Option;
+import java.util.List;
+
+import com.osi.atz.dto.OptionDto;
 
 public interface IOptionService {
 	
-	String createOption(Option option);
-	String updateOption(Option option);
-	Option viewOption(int optionId);
+	String createOption(OptionDto optionDto, int questionId);
+	String updateOption(OptionDto optionDto, int optionId);
+	OptionDto viewOption(int optionId);
 	String deleteOption(int optionId);
+	List<OptionDto> getOptions(int questionId);
 
 }

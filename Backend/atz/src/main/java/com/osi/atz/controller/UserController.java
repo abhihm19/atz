@@ -14,14 +14,13 @@ import com.osi.atz.service.IUserService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(value="/api/v1/")
+@RequestMapping(value="/api/v1")
 public class UserController {
 	
 	private IUserService userService;	
 	private UserRepository userRepository;	
 	
 	public UserController(IUserService userService, UserRepository userRepository) {
-		super();
 		this.userService = userService;
 		this.userRepository = userRepository;
 	}
@@ -29,10 +28,11 @@ public class UserController {
 	@PostMapping("/signup")
     public ResponseEntity<?> saveUser(@RequestBody SignUpRequest signUpRequest) {
     	System.out.println(signUpRequest);
-    	if (userRepository.findByEmail(signUpRequest.getEmail()) != null) {
+    	if (userRepository.findByEmail(signUpRequest.getEmailId()) != null 
+    			|| userRepository.findByUsername(signUpRequest.getUsername()) != null) {
 			return ResponseEntity
 					.badRequest()
-					.body(new ApiResponse(false,"Username is already taken!"));
+					.body(new ApiResponse(false,"Username or Email Id is already taken!"));
 		}
     	
     	userService.saveUser(signUpRequest);

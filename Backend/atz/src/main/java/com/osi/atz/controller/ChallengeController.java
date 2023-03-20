@@ -1,5 +1,7 @@
 package com.osi.atz.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +19,7 @@ import com.osi.atz.service.IChallengeService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(value="/api/v1/company/challenge")
+@RequestMapping(value="/api/v1/{username}/company/{companyId}/challenge")
 public class ChallengeController {
 	
 	private IChallengeService challengeService;	
@@ -27,22 +29,27 @@ public class ChallengeController {
 	}
 
 	@PostMapping()
-    public ResponseEntity<ApiResponse> createChallenge(@RequestBody ChallengeDto challengeDto) {
-		String output = challengeService.createChallenge(challengeDto);
+    public ResponseEntity<ApiResponse> createChallenge(@RequestBody ChallengeDto challengeDto,@PathVariable int companyId) {
+		String output = challengeService.createChallenge(challengeDto, companyId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	
 	@PutMapping()
-    public ResponseEntity<ApiResponse> updateChallenge(@RequestBody ChallengeDto challengeDto) {
-		String output = challengeService.updateChallenge(challengeDto);
+    public ResponseEntity<ApiResponse> updateChallenge(@RequestBody ChallengeDto challengeDto,@PathVariable int challengeId) {
+		String output = challengeService.updateChallenge(challengeDto, challengeId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	
 	@GetMapping("/{challengeId}")
     public ResponseEntity<ChallengeDto> viewChallenge(@PathVariable int challengeId) {
-		System.out.println(challengeId);
 		ChallengeDto challengeDto = challengeService.viewChallenge(challengeId);
     	return ResponseEntity.ok().body(challengeDto);	
+	}
+	
+	@GetMapping()
+    public ResponseEntity<List<ChallengeDto>> getChallenges(@PathVariable int companyId) {
+		List<ChallengeDto> challengeDtos = challengeService.getChallenges(companyId);
+    	return ResponseEntity.ok().body(challengeDtos);	
 	}
 	
 	@DeleteMapping("/{challengeId}")

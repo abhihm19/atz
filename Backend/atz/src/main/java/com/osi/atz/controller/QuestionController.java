@@ -1,5 +1,7 @@
 package com.osi.atz.controller;
 
+import java.util.List;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -17,7 +19,7 @@ import com.osi.atz.service.IQuestionService;
 
 @RestController
 @CrossOrigin(origins = "http://localhost:3000")
-@RequestMapping(value="/api/v1/company/challenge/{id}/question")
+@RequestMapping(value="/api/v1/{username}/company/{companyId}/challenge/{challengeId}/question")
 public class QuestionController {
 	
 	private IQuestionService questionService;
@@ -32,9 +34,9 @@ public class QuestionController {
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	
-	@PutMapping()
-    public ResponseEntity<ApiResponse> updateQuestion(@RequestBody QuestionDto questionDto) {
-		String output = questionService.updateQuestion(questionDto);
+	@PutMapping("/{questionId}")
+    public ResponseEntity<ApiResponse> updateQuestion(@RequestBody QuestionDto questionDto, @PathVariable int questionId) {
+		String output = questionService.updateQuestion(questionDto, questionId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	
@@ -42,6 +44,12 @@ public class QuestionController {
     public ResponseEntity<QuestionDto> viewQuestion(@PathVariable int questionId) {
 		QuestionDto questionDto = questionService.viewQuestion(questionId);
     	return ResponseEntity.ok().body(questionDto);	
+	}
+	
+	@GetMapping()
+    public ResponseEntity<List<QuestionDto>> getQuestions(@PathVariable int challengeId) {
+		List<QuestionDto> questionDtos = questionService.getQuestions(challengeId);
+    	return ResponseEntity.ok().body(questionDtos);	
 	}
 	
 	@DeleteMapping("/{questionId}")

@@ -9,11 +9,11 @@ import lombok.Setter;
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class SignUpRequest {
+public class CompanyDto {
 	
-	private String emailId;
-	private String username;
-	private String password;
-	private String role;
+	private int companyId;
+	private String companyName;
+	private String aboutCompany;
+	private long userId;	
 
 }

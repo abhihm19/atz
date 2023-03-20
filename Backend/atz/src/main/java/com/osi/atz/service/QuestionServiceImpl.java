@@ -1,5 +1,8 @@
 package com.osi.atz.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.osi.atz.dto.QuestionDto;
@@ -33,8 +36,8 @@ public class QuestionServiceImpl implements IQuestionService {
 	}
 
 	@Override
-	public String updateQuestion(QuestionDto questionDto) {	
-		Question question = questionRepository.findById(questionDto.getQuestionId())
+	public String updateQuestion(QuestionDto questionDto, int questionId) {	
+		Question question = questionRepository.findById(questionId)
 				.orElseThrow(() -> new RuntimeException("Question not found"));
 		question.setQuestion(questionDto.getQuestion());
 		question.setMarks(questionDto.getMarks());
@@ -47,18 +50,30 @@ public class QuestionServiceImpl implements IQuestionService {
 	public QuestionDto viewQuestion(int questionId) {
 		Question question = questionRepository.findById(questionId)
 				.orElseThrow(() -> new RuntimeException("Question not found"));
-		QuestionDto questionDto = new QuestionDto();
-		questionDto.setQuestion(question.getQuestion());
-		questionDto.setMarks(question.getMarks());
-		return questionDto;
+		return mapToQuestionDto(question);
 	}
 
 	@Override
 	public String deleteQuestion(int questionId) {
 		Question question = questionRepository.findById(questionId)
 				.orElseThrow(() -> new RuntimeException("Question not found"));
+		question.setChallenge(null);
+		question.setOptions(null);
 		questionRepository.delete(question);
 	    return "Question deleted successfully";
+	}
+
+	@Override
+	public List<QuestionDto> getQuestions(int challengeId) {
+		List<Question> questions = questionRepository.findAll();
+		return questions.stream().map((question) -> mapToQuestionDto(question)).collect(Collectors.toList());
+	}
+
+	private QuestionDto mapToQuestionDto(Question question) {
+		QuestionDto questionDto = new QuestionDto();
+		questionDto.setQuestion(question.getQuestion());
+		questionDto.setMarks(question.getMarks());
+		return questionDto;
 	}
 
 }

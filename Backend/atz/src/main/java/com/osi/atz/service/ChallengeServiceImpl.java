@@ -1,39 +1,33 @@
 package com.osi.atz.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.stereotype.Service;
 
 import com.osi.atz.dto.ChallengeDto;
 import com.osi.atz.model.Challenge;
 import com.osi.atz.model.Company;
-import com.osi.atz.model.User;
 import com.osi.atz.repository.ChallengeRepository;
 import com.osi.atz.repository.CompanyRepository;
-import com.osi.atz.repository.UserRepository;
 
 @Service
 public class ChallengeServiceImpl implements IChallengeService {
 	
-	private UserRepository userRepository;
 	private CompanyRepository companyRepository;
 	private ChallengeRepository challengeRepository;
 
-	public ChallengeServiceImpl(UserRepository userRepository, CompanyRepository companyRepository, ChallengeRepository challengeRepository) {
-		this.userRepository = userRepository;
+	public ChallengeServiceImpl(CompanyRepository companyRepository, ChallengeRepository challengeRepository) {
 		this.companyRepository = companyRepository;
 		this.challengeRepository = challengeRepository;
 	}
 
 	@Override
-	public String createChallenge(ChallengeDto challengeDto) {
-		String email = "abhi2@abc.com";
-		User user = userRepository.findByEmail(email);
-		if(user == null) {
-			throw new RuntimeException("User not found");
-		}
-		Company company = companyRepository.findByUser(user);
-		if(company == null) {
-			throw new RuntimeException("Company is not associated with any user");
-		}
+	public String createChallenge(ChallengeDto challengeDto, int companyId) {
+		
+		Company company = companyRepository.findById(companyId)
+				.orElseThrow(() -> new RuntimeException("Company not found"));
+		
 		Challenge challenge = new Challenge();
 		challenge.setChallengeName(challengeDto.getChallengeName());
 		challenge.setChallengeDurationInMinutes(challengeDto.getChallengeDurationInMinutes());
@@ -45,8 +39,8 @@ public class ChallengeServiceImpl implements IChallengeService {
 	}
 	
 	@Override
-	public String updateChallenge(ChallengeDto challengeDto) {
-		Challenge existingChallenge = challengeRepository.findById(challengeDto.getChallengeId())
+	public String updateChallenge(ChallengeDto challengeDto, int challengeId) {
+		Challenge existingChallenge = challengeRepository.findById(challengeId)
 					.orElseThrow(() -> new RuntimeException("Challenge not found"));
 		existingChallenge.setChallengeName(challengeDto.getChallengeName());
 		existingChallenge.setChallengeDurationInMinutes(challengeDto.getChallengeDurationInMinutes());
@@ -62,12 +56,12 @@ public class ChallengeServiceImpl implements IChallengeService {
 	public ChallengeDto viewChallenge(int challengeId) {
 		Challenge existingChallenge = challengeRepository.findById(challengeId)
 				.orElseThrow(() -> new RuntimeException("Challenge not found"));
-		ChallengeDto challengeDto = convertChallengeToChallengeDto(existingChallenge);
+		ChallengeDto challengeDto = mapToChallengeDto(existingChallenge);
 		
 		return challengeDto;
 	}
 
-	private ChallengeDto convertChallengeToChallengeDto(Challenge challenge) {
+	private ChallengeDto mapToChallengeDto(Challenge challenge) {
 		ChallengeDto challengeDto = new ChallengeDto();
 		challengeDto.setChallengeName(challenge.getChallengeName());
 		challengeDto.setChallengeDurationInMinutes(challenge.getChallengeDurationInMinutes());
@@ -83,8 +77,15 @@ public class ChallengeServiceImpl implements IChallengeService {
 		Challenge existingChallenge = challengeRepository.findById(challengeId)
 				.orElseThrow(() -> new RuntimeException("Challenge not found"));
 		existingChallenge.setCompany(null);
+		existingChallenge.setQuestions(null);
 		challengeRepository.delete(existingChallenge);
 		return "Challenge deleted successfully";
+	}
+
+	@Override
+	public List<ChallengeDto> getChallenges(int companyId) {
+		List<Challenge> challenges = challengeRepository.findAll();
+		return challenges.stream().map((challenge) -> mapToChallengeDto(challenge)).collect(Collectors.toList());
 	}
 
 }

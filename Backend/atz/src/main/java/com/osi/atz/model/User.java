@@ -26,7 +26,14 @@ public class User {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	@Column(name = "user_id")
 	private long userId;
-	private String email;
+	
+	@Column(name = "email_id", nullable = false, unique = true)
+	private String emailId;
+	
+	@Column(name = "user_name", nullable = false, unique = true)
+	private String username;
+	
+	@Column(nullable = false)
 	private String password;
 	
 	@ManyToOne(cascade = CascadeType.ALL)
