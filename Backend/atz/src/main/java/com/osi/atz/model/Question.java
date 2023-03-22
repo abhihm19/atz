@@ -37,7 +37,7 @@ public class Question {
 	@JoinColumn(name = "challenge_id", referencedColumnName ="challenge_id" )
 	private Challenge challenge;
 
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "option")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
 	private List<Option> options = new ArrayList<>();
 	
 }

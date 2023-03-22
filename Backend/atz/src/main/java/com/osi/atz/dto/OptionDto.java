@@ -13,6 +13,6 @@ public class OptionDto {
 	
 	private int optionId;
 	private String optionDetails;
-	private boolean isCorrect;
+	private boolean correct;
 
 }

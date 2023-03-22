@@ -29,8 +29,8 @@ public class QuestionController {
 	}
 	
 	@PostMapping()
-    public ResponseEntity<ApiResponse> createQuestion(@RequestBody QuestionDto questionDto) {
-		String output = questionService.createQuestion(questionDto);
+    public ResponseEntity<ApiResponse> createQuestion(@RequestBody QuestionDto questionDto, @PathVariable int challengeId) {
+		String output = questionService.createQuestion(questionDto, challengeId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	

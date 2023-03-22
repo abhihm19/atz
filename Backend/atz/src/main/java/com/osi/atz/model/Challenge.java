@@ -47,7 +47,7 @@ public class Challenge {
 	@JoinColumn(name = "company_id")
 	private Company company;
 	
-	@OneToMany(cascade = CascadeType.ALL, mappedBy = "question")
+	@OneToMany(cascade = CascadeType.ALL, mappedBy = "challenge")
 	private List<Question> questions = new ArrayList<>();
 	
 

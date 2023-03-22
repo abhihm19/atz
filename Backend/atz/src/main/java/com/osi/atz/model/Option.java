@@ -28,7 +28,7 @@ public class Option {
 	private int optionId;
 	private String optionDetails;
 	
-	@Column(name = "is_correct", nullable = true)	
+	@Column(name = "is_correct", nullable = true, columnDefinition = "BOOLEAN")	
 	private boolean isCorrect;
 	
 	@ManyToOne(cascade = CascadeType.ALL)

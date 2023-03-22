@@ -1,5 +1,7 @@
 package com.osi.atz.controller;
 
+import java.util.Optional;
+
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -9,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.osi.atz.dto.ApiResponse;
 import com.osi.atz.dto.SignUpRequest;
+import com.osi.atz.model.User;
 import com.osi.atz.repository.UserRepository;
 import com.osi.atz.service.IUserService;
 
@@ -28,8 +31,9 @@ public class UserController {
 	@PostMapping("/signup")
     public ResponseEntity<?> saveUser(@RequestBody SignUpRequest signUpRequest) {
     	System.out.println(signUpRequest);
-    	if (userRepository.findByEmail(signUpRequest.getEmailId()) != null 
-    			|| userRepository.findByUsername(signUpRequest.getUsername()) != null) {
+    	Optional<User> userWithEmail = userRepository.findByEmailId(signUpRequest.getEmailId());
+    	Optional<User> userWithUsername = userRepository.findByUsername(signUpRequest.getUsername());
+    	if (userWithEmail.isPresent() || userWithUsername.isPresent()) {
 			return ResponseEntity
 					.badRequest()
 					.body(new ApiResponse(false,"Username or Email Id is already taken!"));

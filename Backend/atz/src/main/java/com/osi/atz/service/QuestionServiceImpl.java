@@ -23,8 +23,8 @@ public class QuestionServiceImpl implements IQuestionService {
 	}
 
 	@Override
-	public String createQuestion(QuestionDto questionDto) {
-		Challenge challenge = challengeRepository.findById(questionDto.getChallengeId())
+	public String createQuestion(QuestionDto questionDto, int challengeId) {
+		Challenge challenge = challengeRepository.findById(challengeId)
 				.orElseThrow(() -> new RuntimeException("Challenge not found"));
 		Question question = new Question();
 		question.setQuestion(questionDto.getQuestion());
@@ -58,7 +58,7 @@ public class QuestionServiceImpl implements IQuestionService {
 		Question question = questionRepository.findById(questionId)
 				.orElseThrow(() -> new RuntimeException("Question not found"));
 		question.setChallenge(null);
-		question.setOptions(null);
+//		question.setOptions(null);
 		questionRepository.delete(question);
 	    return "Question deleted successfully";
 	}

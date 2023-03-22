@@ -4,8 +4,8 @@ import com.osi.atz.dto.CompanyDto;
 
 public interface ICompanyService {
 	
-	String updateCompany(CompanyDto companyDto, String username);
-	CompanyDto viewCompany(String username);
-	String deleteCompany(String username);
+	String updateCompany(CompanyDto companyDto, int companyId);
+	CompanyDto viewCompany(int companyId);
+	String deleteCompany(int companyId);
 
 }

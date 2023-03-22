@@ -34,7 +34,7 @@ public class ChallengeController {
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	
-	@PutMapping()
+	@PutMapping("/{challengeId}")
     public ResponseEntity<ApiResponse> updateChallenge(@RequestBody ChallengeDto challengeDto,@PathVariable int challengeId) {
 		String output = challengeService.updateChallenge(challengeDto, challengeId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	

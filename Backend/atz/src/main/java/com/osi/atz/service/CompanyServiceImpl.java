@@ -4,26 +4,20 @@ import org.springframework.stereotype.Service;
 
 import com.osi.atz.dto.CompanyDto;
 import com.osi.atz.model.Company;
-import com.osi.atz.model.User;
 import com.osi.atz.repository.CompanyRepository;
-import com.osi.atz.repository.UserRepository;
 
 @Service
 public class CompanyServiceImpl implements ICompanyService {
 	
 	private CompanyRepository companyRepository;
-	private UserRepository userRepository;
 
-	public CompanyServiceImpl(CompanyRepository companyRepository, UserRepository userRepository) {
+	public CompanyServiceImpl(CompanyRepository companyRepository) {
 		this.companyRepository = companyRepository;
-		this.userRepository = userRepository;
 	}
 
 	@Override
-	public String updateCompany(CompanyDto companyDto, String username) {
-		User user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("User not found"));
-		Company company = companyRepository.findByUser(user)
+	public String updateCompany(CompanyDto companyDto, int companyId) {		
+		Company company = companyRepository.findById(companyId)
 				.orElseThrow(() -> new RuntimeException("Company not found"));
 		company.setCompanyName(companyDto.getCompanyName());
 		company.setAboutCompany(companyDto.getAboutCompany());
@@ -34,10 +28,8 @@ public class CompanyServiceImpl implements ICompanyService {
 	}
 
 	@Override
-	public CompanyDto viewCompany(String username) {
-		User user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("User not found"));
-		Company company = companyRepository.findByUser(user)
+	public CompanyDto viewCompany(int companyId) {
+		Company company = companyRepository.findById(companyId)
 				.orElseThrow(() -> new RuntimeException("Company not found"));
 		CompanyDto companyDto = new CompanyDto();
 		companyDto.setCompanyName(company.getCompanyName());
@@ -46,10 +38,8 @@ public class CompanyServiceImpl implements ICompanyService {
 	}
 
 	@Override
-	public String deleteCompany(String username) {
-		User user = userRepository.findByUsername(username)
-				.orElseThrow(() -> new RuntimeException("User not found"));
-		Company company = companyRepository.findByUser(user)
+	public String deleteCompany(int companyId) {
+		Company company = companyRepository.findById(companyId)
 				.orElseThrow(() -> new RuntimeException("Company not found"));
 		companyRepository.delete(company);
 		

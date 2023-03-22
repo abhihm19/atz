@@ -2,6 +2,7 @@ package com.osi.atz.controller;
 
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -24,21 +25,21 @@ public class CompanyController {
 		this.companyService = companyService;
 	}
 	
-	@PutMapping()
-    public ResponseEntity<ApiResponse> updateCompany(@RequestBody CompanyDto companyDto, @PathVariable String username) {
-		String output = companyService.updateCompany(companyDto, username);
+	@PutMapping("/{companyId}")
+    public ResponseEntity<ApiResponse> updateCompany(@RequestBody CompanyDto companyDto, @PathVariable int companyId) {
+		String output = companyService.updateCompany(companyDto, companyId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 	
-	@GetMapping()
-    public ResponseEntity<CompanyDto> viewCompany(@PathVariable String username) {
-		CompanyDto companyDto = companyService.viewCompany(username);
+	@GetMapping("/{companyId}")
+    public ResponseEntity<CompanyDto> viewCompany(@PathVariable int companyId) {
+		CompanyDto companyDto = companyService.viewCompany(companyId);
     	return ResponseEntity.ok().body(companyDto);	
 	}
 	
-	@PutMapping()
-    public ResponseEntity<ApiResponse> deleteCompany(@PathVariable String username) {
-		String output = companyService.deleteCompany(username);
+	@DeleteMapping("/{companyId}")
+    public ResponseEntity<ApiResponse> deleteCompany(@PathVariable int companyId) {
+		String output = companyService.deleteCompany(companyId);
     	return ResponseEntity.ok().body(new ApiResponse(true,output));	
 	}
 

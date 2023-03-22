@@ -6,7 +6,7 @@ import com.osi.atz.dto.QuestionDto;
 
 public interface IQuestionService {
 	
-	String createQuestion(QuestionDto questionDto);
+	String createQuestion(QuestionDto questionDto, int challengeId);
 	String updateQuestion(QuestionDto questionDto, int questionId);
 	QuestionDto	 viewQuestion(int questionId);
 	String deleteQuestion(int questionId);
